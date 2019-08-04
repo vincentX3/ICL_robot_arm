@@ -7,8 +7,8 @@ class robot_console(object):
     table1 = [['A', '50',  0],
               ['B', '140', 1],
               ['F', '55',  3],
-              ['C', '80',
-              ['G', '0']
+              ['C', '80'],
+              ['G', '0']]
 
     table2 = [['A', '50',  2],
               ['B', '140', 1],
@@ -196,15 +196,15 @@ class robot_console(object):
                 self.table1[4][1] = degree
         return crew_table
 
-    def arm_up_table(self, speed=5):
+    def arm_up_table(self, speed=5, angle_A=35, angle_B=100):
         try:
             self.get_degree()
             #         motor        +/-         degree
             table_ = [['A',       'ADD',        '0'],
                       ['B',       'ADD',        '0'],
                       ['F',       'ADD',        '0']]
-            table3 = [['A', '35',  1],
-                      ['B', '100', 0]]
+            table3 = [['A', str(angle_A),  1],
+                      ['B', str(angle_B),  0]]
             for i in [0, 1]:
                 if int(self.table1[i][1]) > int(table3[i][1]):
                     table_[i][1] = 'MINUS'
