@@ -255,7 +255,7 @@ class robot_console(object):
         if command_table:
             self.execute(command_table)
 
-        command_table = self.crew_table(90, 'CLOSE')
+        command_table = self.crew_table(90, 'OPEN')
         if command_table:
             self.execute(command_table)
 
