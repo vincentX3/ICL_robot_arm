@@ -3,3 +3,5 @@
 '''
 import numpy as np
 from microphone import *
+from robotconsole import *
+from camera import *
