@@ -233,30 +233,43 @@ class robot_console(object):
             return
 
     def do_catch(self, dir_obj):
-        command_table = self.arm_up_table()
-        if command_table:
-            self.execute(command_table)
-
-        command_table = self.move_table(dir_obj)
-        if command_table:
-            self.execute(command_table)
-
-        command_table = self.crew_table(90)
-        if command_table:
-            self.execute(command_table)
+        command_table = []
+        command_table1 = self.arm_up_table()
+        if command_table1:
+            command_table.append(command_table1)
+        command_table2 = self.move_table(dir_obj)
+        if command_table2:
+            command_table.append(command_table2)
+        command_table3 = self.crew_table(90)
+        if command_table3:
+            command_table.append(command_table3)
+        self.execute(command_table)
 
     def do_put(self, dir_destination):
-        command_table = self.arm_up_table()
-        if command_table:
-            self.execute(command_table)
+        command_table = []
+        command_table1 = self.arm_up_table()
+        if command_table1:
+            command_table.append(command_table1)
+        command_table2 = self.move_table(dir_destination)
+        if command_table2:
+            command_table.append(command_table2)
+        command_table3 = self.crew_table(90, 'OPEN')
+        if command_table3:
+            command_table.append(command_table3)
+        self.execute(command_table)
 
-        command_table = self.move_table(dir_destination)
-        if command_table:
-            self.execute(command_table)
-
-        command_table = self.crew_table(90, 'OPEN')
-        if command_table:
-            self.execute(command_table)
+    def put_table(self, dir_destination):
+        command_table = []
+        command_table1 = self.arm_up_table()
+        if command_table1:
+            command_table.append(command_table1)
+        command_table2 = self.move_table(dir_destination)
+        if command_table2:
+            command_table.append(command_table2)
+        command_table3 = self.crew_table(90, 'OPEN')
+        if command_table3:
+            command_table.append(command_table3)
+        return command_table
 
 
 def input_dir_obj():  # For test
