@@ -25,7 +25,6 @@ class robot_console(object):
                 return
             except:
                 print('Initialise - Failed')
-                self.ser.close()
                 continue
 
     def list_ports(self):
