@@ -1,4 +1,4 @@
-class RobotConsole(object):
+class robot_console(object):
     # serial port
     ser = ''
 
@@ -6,13 +6,15 @@ class RobotConsole(object):
     #      motor  default  order
     table1 = [['A', '50',  0],
               ['B', '140', 1],
-              ['F', '55',  3]]
+              ['F', '55',  3],
+              ['C', '80',  4],
+              ['G', '0',  5]]
 
     table2 = [['A', '50',  2],
               ['B', '140', 1],
-              ['F', '55',  0]]
-
-    [C, G] = [90, 0]
+              ['F', '55',  0],
+              ['C', '80'],
+              ['G', '0']]
 
     def __init__(self):
         print('Initialising...')
@@ -109,8 +111,21 @@ class RobotConsole(object):
             self.table2[0][2] = str(B)
             self.table2[0][3] = str(F)
         except:
-            print("超出算法边界，无法执行运算")
             return
+
+    def get_degree(self):
+        command = 'SHOW DEGREE'
+        self.ser.write(command.encode())
+        s = self.ser.readlines(40)
+        angle_degree = []
+        for st in s:
+            angle_degree.append(st.decode('utf-8'))
+        'A 0 B 0 C 0 D 0 E 0 F 0 G 0'
+        angle_degree[2] = self.table1[0][1]
+        angle_degree[6] = self.table1[1][1]
+        angle_degree[10] = self.table1[3][1]
+        angle_degree[22] = self.table1[2][1]
+        angle_degree[26] = self.table1[4][1]
 
     def execute(self, command_table):
         if command_table == '':
@@ -118,14 +133,14 @@ class RobotConsole(object):
         for command in command_table:
             self.ser.write(command.encode())
 
-    def do_reset(self):
+    def reset_table(self):
         reset_table = []
         for i in [0, 1, 2]:
             reset_table.append('SET' + ' ' + self.table1[i][0] + ' ' + self.table1[i][1])
-        self.execute(reset_table)
 
-    def do_move(self, dir_obj, speed=5):
+    def move_table(self, dir_obj, speed=5):
         try:
+            self.get_degree()
             self.aihuan_algrithm(dir_obj)
             if self.table1 == self.table2:
                 return
@@ -157,49 +172,93 @@ class RobotConsole(object):
                     else:
                         cur_num_ = num__ - speed*j
                     move_table.append(table_[k][1] + ' ' + table_[k][0] + ' ' + str(cur_num_))
-            self.execute(move_table)
-            self.table1 = self.table2
+            return move_table
         except:
-            self.do_reset()
-
-    def do_crew(self, angle=90, os='CLOSE', degree=0):
-        crew_table = []
-        if self.C != angle:
-            crew_table.append('SET C' + ' ' + str(angle))
-            self.C = angle
-        if os == 'OPEN':
-            if self.G != 0:
-                crew_table.append('SET G 0')
-                self.G = 0
-        elif os == 'CLOSE':
-            if self.G != 58:
-                crew_table.append('SET G 58')
-                self.G = 58
-        elif os == 'DIY':
-            if self.G != degree:
-                crew_table.append('SET G' + ' ' + str(degree))
-                self.G = degree
-        if crew_table:
-            self.execute(crew_table)
-        else:
             return
 
-    def place_instrument(self,instrument):
-        '''
-        在已经成功抓取目标后，根据工具类型，将其放置到对应方位
-        :param instrument: str 工具类型
-        :return:
-        '''
-        #todo 根据实际空间完善放置代码
+    def crew_table(self, angle=90, os='CLOSE', degree=0):
+        self.get_degree()
+        crew_table = []
+        if self.table1[3][1] != angle:
+            crew_table.append('SET C' + ' ' + str(angle))
+            self.table1[3][1] = angle
+        if os == 'OPEN':
+            if self.table1[4][1] != 0:
+                crew_table.append('SET G 0')
+                self.table1[4][1] = 0
+        elif os == 'CLOSE':
+            if self.table1[4][1] != 58:
+                crew_table.append('SET G 58')
+                self.table1[4][1] = 58
+        elif os == 'DIY':
+            if self.table1[4][1] != degree:
+                crew_table.append('SET G' + ' ' + str(degree))
+                self.table1[4][1] = degree
+        return crew_table
 
-    def pick_instrument(self,instument):
-        '''
-        根据工具类型，从对应方位抓取工具并移动机械臂至最左侧合适方位
-        :param instument: 
-        :return: 
-        '''
-        # todo 根据实际空间完善放置代码
-        
+    def arm_up_table(self, speed=5):
+        try:
+            self.get_degree()
+            #         motor        +/-         degree
+            table_ = [['A',       'ADD',        '0'],
+                      ['B',       'ADD',        '0'],
+                      ['F',       'ADD',        '0']]
+            table3 = [['A', '35',  1],
+                      ['B', '100', 0]]
+            for i in [0, 1]:
+                if int(self.table1[i][1]) > int(table3[i][1]):
+                    table_[i][1] = 'MINUS'
+                    table_[i][2] = str(int(self.table1[i][1]) - int(table3[i][1]))
+                elif int(self.table1[i][1]) < int(table3[i][1]):
+                    table_[i][1] = 'ADD'
+                    table_[i][2] = str(int(table3[i][1]) - int(self.table1[i][1]))
+                else:
+                    pass
+            arm_up_table = []
+            for i in [0, 1]:
+                for k in [0, 1]:
+                    if table3[k][2] == i:
+                        break
+                if table_[k][2] == '0':
+                    continue
+                num__ = int(table_[k][2])
+                step__ = (num__ + speed - 1) // speed
+                for j in list(range(step__)):
+                    if speed * (j + 1) < num__:
+                        cur_num_ = speed
+                    else:
+                        cur_num_ = num__ - speed * j
+                    arm_up_table.append(table_[k][1] + ' ' + table_[k][0] + ' ' + str(cur_num_))
+            return arm_up_table
+        except:
+            return
+
+    def do_catch(self, dir_obj):
+        command_table = self.arm_up_table()
+        if command_table:
+            self.execute(command_table)
+
+        command_table = self.move_table(dir_obj)
+        if command_table:
+            self.execute(command_table)
+
+        command_table = self.crew_table(90)
+        if command_table:
+            self.execute(command_table)
+
+    def do_put(self, dir_destination):
+        command_table = self.arm_up_table()
+        if command_table:
+            self.execute(command_table)
+
+        command_table = self.move_table(dir_destination)
+        if command_table:
+            self.execute(command_table)
+
+        command_table = self.crew_table(90, 'CLOSE')
+        if command_table:
+            self.execute(command_table)
+
 
 def input_dir_obj():  # For test
     string_ = input('the location is:').split()
