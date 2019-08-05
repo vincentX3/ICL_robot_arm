@@ -292,14 +292,26 @@ class robot_console(object):
         :return:
         '''
         # todo 根据实际空间完善放置代码
+        if instrument == 'knife':
+            self.do_place([0, 0, 0])
+        if instrument == 'fork':
+            self.do_place([1, 1, 1])
+        if instrument == 'spoon':
+            self.do_place([2, 2, 2])
 
-    def pick_instrument(self, instument):
+    def pick_instrument(self, instrument):
         '''
         根据工具类型，从对应方位抓取工具并移动机械臂至最左侧合适方位
         :param instument:
         :return:
         '''
         # todo 根据实际空间完善放置代码
+        if instrument == 'knife':
+            self.do_pick([0, 0, 0])
+        if instrument == 'fork':
+            self.do_pick([1, 1, 1])
+        if instrument == 'spoon':
+            self.do_pick([2, 2, 2])
 
 
 def input_dir_obj():  # For test
