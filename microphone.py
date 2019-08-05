@@ -1,6 +1,7 @@
 import time
 import speech_recognition as sr
-
+import pyaudio
+import wave
 class Microphone(object):
     '''
     手动选择“在线/离线模式”，使用蓝牙耳机（默认x3耳机)，持续收听并翻译，直到收到“terminate the programme”时退出程序
@@ -13,6 +14,7 @@ class Microphone(object):
         self.ORDER_DICT=['here you are','come here']
         self.INSTRUMENTS_DICT=['knife', 'fork', 'spoon']
         self.KEYWORDS=[['I want a knife',1.0],['I want a fork',1.0],['I want a spoon',1.0],['terminate the programme',1.0]]
+        self.p = pyaudio.PyAudio() # instantiate PyAudio (1)
 
     def list_microphone_names(self):
         # 查看可用microphone
@@ -34,6 +36,7 @@ class Microphone(object):
         respond=['3','None']
         while(True):
             with self.mic as source:
+                self.feedback('alert')
                 print("\nsay something -.-")
                 audio = self.r.listen(source)
 
@@ -50,6 +53,7 @@ class Microphone(object):
                 finally:
                     if 'result' not in locals():
                         result='not understand.'
+                        self.feedback('say_again')
             else:
                 #offline mode
                 # recognize speech using Sphinx
@@ -67,20 +71,53 @@ class Microphone(object):
 
             for instrument in self.INSTRUMENTS_DICT:
                 if instrument in result:
+                    self.feedback('pick_to_hand')
                     print("got it！here the "+instrument)
                     respond=['1',instrument]
                     return respond
 
             for order in self.ORDER_DICT:
                 if order in result:
+                    self.feedback('pick_from_hand')
                     print('Here I come~')
                     respond[0]='0'
                     return respond
 
             if ('terminate' in result) or ('terminator' in result):
+                self.feedback('exit')
                 print("bye")
                 respond[0]='2'
                 return respond
+
+    def feedback(self, situation):
+        #todo 录音，补上对应路径
+        voice_path={'alert':r'resource\test.wav'
+            ,'say_again':None,'exit':None,'pick_from_hand':None,'pick_to_hand':None}
+        CHUNK = 1024
+
+        wf = wave.open(voice_path[situation], 'rb')
+
+        # open stream (2)
+        stream = self.p.open(format=self.p.get_format_from_width(wf.getsampwidth()),
+                        channels=wf.getnchannels(),
+                        rate=wf.getframerate(),
+                        output=True)
+
+        # read data
+        data = wf.readframes(CHUNK)
+
+        # play stream (3)
+        while len(data) > 0:
+            stream.write(data)
+            data = wf.readframes(CHUNK)
+
+        # stop stream (4)
+        stream.stop_stream()
+        stream.close()
+
+    def destory(self):
+        # close PyAudio
+        self.p.terminate()
 
 if __name__=='__main__':
     mic=Microphone()

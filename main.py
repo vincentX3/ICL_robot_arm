@@ -1,5 +1,5 @@
 '''
-总控台，无误差修正版本
+总控台v1，无误差修正版本
 '''
 from configuration import *
 
@@ -11,7 +11,7 @@ class PickAndPlace(object):
         self.microphone=Microphone()
         # self.microphone.set_Microphone(1)  #选择microphone
         #机械臂：初始化串口
-        self.console=RobotConsole()
+        self.console=robot_console()
         #摄像头初始化
         self.camera=Camera()
 

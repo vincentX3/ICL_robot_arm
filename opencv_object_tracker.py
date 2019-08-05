@@ -6,6 +6,7 @@ from imutils.video import FPS
 import argparse
 import imutils
 import time
+
 #分析命令参数
 ap=argparse.ArgumentParser()
 ap.add_argument("-t","--tracker",type=str,default="csrt",help="OpenCV object tracker type")

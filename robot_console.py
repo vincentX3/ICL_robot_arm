@@ -175,7 +175,14 @@ class robot_console(object):
         except:
             return
 
-    def crew_table(self, angle=90, os='CLOSE', degree=0):
+    def claw_table(self, angle=90, os='CLOSE', degree=0):
+        '''
+        移动
+        :param angle:
+        :param os:
+        :param degree:
+        :return:
+        '''
         self.get_degree()
         crew_table = []
         if self.table1[3][1] != angle:
@@ -196,6 +203,13 @@ class robot_console(object):
         return crew_table
 
     def arm_up_table(self, speed=5, angle_A=35, angle_B=100):
+        '''
+        抬起机械臂
+        :param speed:
+        :param angle_A:
+        :param angle_B:
+        :return:
+        '''
         try:
             self.get_degree()
             #         motor        +/-         degree
@@ -270,6 +284,22 @@ class robot_console(object):
         if command_table3:
             command_table.append(command_table3)
         return command_table
+
+    def place_instrument(self, instrument):
+        '''
+        在已经成功抓取目标后，根据工具类型，将其放置到对应方位
+        :param instrument: str 工具类型
+        :return:
+        '''
+        # todo 根据实际空间完善放置代码
+
+    def pick_instrument(self, instument):
+        '''
+        根据工具类型，从对应方位抓取工具并移动机械臂至最左侧合适方位
+        :param instument:
+        :return:
+        '''
+        # todo 根据实际空间完善放置代码
 
 
 def input_dir_obj():  # For test
