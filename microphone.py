@@ -41,6 +41,7 @@ class Microphone(object):
                 audio = self.r.listen(source)
 
             print('recognizing...')
+            self.feedback('waiting')
             if self.mode=='online':
                 # recognize speech using Google Speech Recognition
                 try:
@@ -71,7 +72,7 @@ class Microphone(object):
 
             for instrument in self.INSTRUMENTS_DICT:
                 if instrument in result:
-                    self.feedback('pick_to_hand')
+                    self.feedback(instrument)
                     print("got it！here the "+instrument)
                     respond=['1',instrument]
                     return respond
@@ -89,10 +90,17 @@ class Microphone(object):
                 respond[0]='2'
                 return respond
 
+            self.feedback('say_again')
+
     def feedback(self, situation):
-        #todo 录音，补上对应路径
-        voice_path={'alert':r'resource\test.wav'
-            ,'say_again':None,'exit':None,'pick_from_hand':None,'pick_to_hand':None}
+        voice_path={'alert':r'resource\start.wav'
+            ,'say_again':r'resource\not_understand.wav'
+            ,'exit':None
+            ,'pick_from_hand':r'resource\fetch.wav'
+            ,'waiting':r'resource\recognizing.wav'
+            ,'knife':r'resource\knife.wav'
+            ,'fork':r'resource\fork.wav'
+            ,'spoon':r'resource\spoon.wav'}
         CHUNK = 1024
 
         wf = wave.open(voice_path[situation], 'rb')
