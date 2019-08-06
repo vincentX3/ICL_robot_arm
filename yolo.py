@@ -24,9 +24,9 @@ from camera import Camera
 
 class YOLO(object):
     _defaults = {
-        "model_path": 'model_data/trained_weights_v15.h5',
+        "model_path": 'model_data/yolo.h5',
         "anchors_path": 'model_data/yolo_anchors.txt',
-        "classes_path": 'model_data/voc_classes.txt',
+        "classes_path": 'model_data/coco_classes.txt',
         "score" : 0.3,
         "iou" : 0.45,
         "model_image_size" : (416, 416),
@@ -190,7 +190,9 @@ class YOLO(object):
             angle1 = 60 * d2r
             angle2 = 30 * d2r
             # from deproject import trans_camera2arm_base
-            position = trans_camera2arm_base(centre, angle1, angle2)
+            #todo 修正物理坐标系
+            # position = trans_camera2arm_base(centre, angle1, angle2)
+            position=centre
 
             print(label, score, (left, top), (right, bottom))
             print(centre)

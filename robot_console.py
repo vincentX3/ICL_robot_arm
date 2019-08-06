@@ -1,3 +1,4 @@
+import time
 class robot_console(object):
     import time
     # serial port

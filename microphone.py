@@ -95,7 +95,7 @@ class Microphone(object):
     def feedback(self, situation):
         voice_path={'alert':r'resource\start.wav'
             ,'say_again':r'resource\not_understand.wav'
-            ,'exit':None
+            ,'exit':r'resource\Thankyou.wav'
             ,'pick_from_hand':r'resource\fetch.wav'
             ,'waiting':r'resource\recognizing.wav'
             ,'knife':r'resource\knife.wav'
