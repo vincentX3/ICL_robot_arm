@@ -1,6 +1,4 @@
-import time
 class robot_console(object):
-    import time
     # serial port
     ser = ''
 
@@ -122,6 +120,7 @@ class robot_console(object):
         st = s[1].decode('utf-8')
         'A 0 B 0 C 0 D 0 E 0 F 0 G 0'
         angle_degree = st.split()
+        print(angle_degree)
         self.table1[0][1] = str(angle_degree[1])
         self.table1[1][1] = str(angle_degree[3])
         self.table1[3][1] = str(angle_degree[5])
@@ -146,6 +145,7 @@ class robot_console(object):
 
     def move_table(self, dir_obj, speed=5):
         self.aihuan_algrithm(dir_obj)
+        self.get_degree()
         print(self.table1)
         print(self.table2)
         if self.table1 == self.table2:
@@ -200,7 +200,7 @@ class robot_console(object):
                 self.table1[4][1] = degree
         return claw_table
 
-    def arm_up_table(self, speed=5, angle_A=35, angle_B=100):
+    def arm_up_table(self, speed=5, angle_A=35, angle_B=90):
         try:
             self.get_degree()
             #         motor        +/-         degree
@@ -237,16 +237,16 @@ class robot_console(object):
         except:
             return
 
-    def do_pick(self, dir_obj, speed=5):
+    def do_pick(self, dir_obj, angle=90, speed=5):
         command_table1 = self.arm_up_table(speed)
         if command_table1:
             self.execute(command_table1)
-        time.sleep(100)
+        # time.sleep(1)
         command_table2 = self.move_table(dir_obj, speed)
         if command_table2:
             self.execute(command_table2)
-        time.sleep(100)
-        command_table3 = self.claw_table(90)
+        # time.sleep(1)
+        command_table3 = self.claw_table(angle)
         if command_table3:
             self.execute(command_table3)
 
@@ -254,11 +254,11 @@ class robot_console(object):
         command_table1 = self.arm_up_table(speed)
         if command_table1:
             self.execute(command_table1)
-        time.sleep(100)
+        # time.sleep(1)
         command_table2 = self.move_table(dir_destination, speed)
         if command_table2:
             self.execute(command_table2)
-        time.sleep(100)
+        # time.sleep(1)
         command_table3 = self.claw_table(90, 'OPEN')
         if command_table3:
             self.execute(command_table3)
@@ -271,18 +271,11 @@ class robot_console(object):
         '''
         # todo 根据实际空间完善放置代码
         if instrument == 'knife':
-            self.do_pick([0, 0, 0])
+            self.do_place([-25, 14, 5])
         if instrument == 'fork':
-            self.do_pick([1, 1, 1])
+            self.do_place([-25, 19, 5])
         if instrument == 'spoon':
-            self.do_pick([2, 2, 2])
-        time.sleep(100)
-        if instrument == 'knife':
-            self.do_place([0, 0, 0])
-        if instrument == 'fork':
-            self.do_place([1, 1, 1])
-        if instrument == 'spoon':
-            self.do_place([2, 2, 2])
+            self.do_place([-25, 9,  5])
 
     def pick_instrument(self, instrument):
         '''
@@ -291,16 +284,28 @@ class robot_console(object):
         :return:
         '''
         # todo 根据实际空间完善放置代码
+        import time
         if instrument == 'knife':
-            self.do_pick([-25, 14, 0])
+            self.do_pick([-25, 14, 5])
         if instrument == 'fork':
-            self.do_pick([-25, 19, 0])
+            self.do_pick([-25, 19, 5])
         if instrument == 'spoon':
-            self.do_pick([-25, 9, 0])
-        time.sleep(100)
+            self.do_pick([-25, 9,  5])
+        time.sleep(0.5)
         if instrument == 'knife':
-            self.do_place([25, 14, 0])
+            self.do_place([20, 25, 0.3])
         if instrument == 'fork':
-            self.do_place([25, 14, 0])
+            self.do_place([20, 25, 0.3])
         if instrument == 'spoon':
-            self.do_place([25, 14, 0])
+            self.do_place([20, 25, 0.3])
+
+    def to_xyz(self, dir_obj, speed=5):
+        # dir_obj = [x,y,z]
+        self.execute(self.move_table(dir_obj, speed))
+
+    def claw_close(self, angle=0):
+        self.execute(self.claw_table(angle))
+
+    def claw_open(self, angle=0):
+        self.execute(self.claw_table(angle, 'OPEN'))
+
