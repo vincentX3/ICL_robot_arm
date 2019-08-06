@@ -48,10 +48,12 @@ class Camera(object):
         else:
             aim_instrument=max(instrument_dict,key=instrument_dict.get) #若两个工具检测到的次数相同，返回第一个
         temp=np.array(aim_data[aim_data['label'].isin([aim_instrument])])[-1]
-        aim_coordinate=temp[2:]
+        aim_coordinate=temp[1:]
         if aim_instrument=='toothbrush' or aim_instrument=='tie' or aim_instrument=='scissors':
             aim_instrument='knife'
 
+        #米转厘米
+        aim_coordinate=100*aim_coordinate
         return aim_instrument,aim_coordinate
         
 

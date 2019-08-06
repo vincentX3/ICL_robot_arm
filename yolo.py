@@ -190,12 +190,10 @@ class YOLO(object):
             angle1 = 60 * d2r
             angle2 = 30 * d2r
             # from deproject import trans_camera2arm_base
-            #todo 修正物理坐标系
-            # position = trans_camera2arm_base(centre, angle1, angle2)
-            position=centre
+            # 修正物理坐标系
+            position = trans_camera2arm_base(centre)
 
             print(label, score, (left, top), (right, bottom))
-            print(centre)
             print(position)
 
             # write result into file
