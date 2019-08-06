@@ -189,7 +189,6 @@ class YOLO(object):
             # transform the center location from camera coordinate to robot_arm base coordinate
             angle1 = 60 * d2r
             angle2 = 30 * d2r
-            # from deproject import trans_camera2arm_base
 
             # 修正物理坐标系
             position = trans_camera2arm_base(centre)
@@ -230,7 +229,7 @@ class YOLO(object):
 
 def detect_video(yolo, video_path, output_path=""):
     import cv2
-    vid = cv2.VideoCapture(1)  # Sometimes maybe 1, try it when doesn't work
+    vid = cv2.VideoCapture(0)  # Sometimes maybe 1, try it when doesn't work
     if not vid.isOpened():
         raise IOError("Couldn't open webcam or video")
     video_FourCC    = int(vid.get(cv2.CAP_PROP_FOURCC))
