@@ -286,18 +286,18 @@ class robot_console(object):
         # todo 根据实际空间完善放置代码
         import time
         if instrument == 'knife':
-            self.do_pick([-25, 14, 5])
+            self.do_pick([-25, 14, 0.3])
         if instrument == 'fork':
-            self.do_pick([-25, 19, 5])
+            self.do_pick([-25, 19, 0.3])
         if instrument == 'spoon':
-            self.do_pick([-25, 9,  5])
+            self.do_pick([-25, 9,  0.3])
         time.sleep(0.5)
         if instrument == 'knife':
-            self.do_place([20, 25, 0.3])
+            self.do_place([20, 25, 5])
         if instrument == 'fork':
-            self.do_place([20, 25, 0.3])
+            self.do_place([20, 25, 5])
         if instrument == 'spoon':
-            self.do_place([20, 25, 0.3])
+            self.do_place([20, 25, 5])
 
     def to_xyz(self, dir_obj, speed=5):
         # dir_obj = [x,y,z]

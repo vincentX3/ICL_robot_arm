@@ -39,8 +39,8 @@ class PickAndPlace(object):
 
         #假设直接抓取并能成功
         #todo：关于抓取的实现，欠补充细节
-        self.console.do_move(aim_coordinate)
-        # self.console.do_crew()
+        self.console.to_xyz(aim_coordinate)
+        self.console.claw_close()
         self.console.place_instrument(class_name)
         
 
