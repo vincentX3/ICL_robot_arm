@@ -14,7 +14,7 @@ from keras.layers import Input
 from PIL import Image, ImageFont, ImageDraw
 
 from yolo3.model import yolo_eval, yolo_body, tiny_yolo_body
-from yolo3.utils import letterbox_image,trans_camera2arm_base
+from yolo3.utils import letterbox_image,coordinate_transform
 import os
 from keras.utils import multi_gpu_model
 import pyrealsense2 as rs
@@ -182,16 +182,7 @@ class YOLO(object):
             point_0 = (right + left) / 2
             point_1 = (top + bottom) / 2
             x, y, z = rs.rs2_deproject_pixel_to_point(color_intrinsics, [point_0, point_1], point_2)
-            centre = [x, y, z]
-
-            import math
-            d2r = math.pi / 180
-            # transform the center location from camera coordinate to robot_arm base coordinate
-            angle1 = 60 * d2r
-            angle2 = 30 * d2r
-            # from deproject import trans_camera2arm_base
-            # 修正物理坐标系
-            position = trans_camera2arm_base(centre)
+            position=coordinate_transform(a3=point_0,b3=point_1,c3=point_2)
 
             print(label, score, (left, top), (right, bottom))
             print(position)
