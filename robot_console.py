@@ -98,6 +98,8 @@ class robot_console(object):
             beta1 = math.atan(tan_beta1)
             cos_beta2 = (a1 * a1 + (s * s + (h - z) * (h - z)) - a2 * a2) / (
                         2 * a1 * math.sqrt((h - z) * (h - z) + s * s))
+
+            print(cos_beta2)
             beta2 = math.acos(cos_beta2)
             theta1 = math.pi - beta1 - beta2
             angleB = (math.pi / 2 - theta1) * 180 / math.pi
