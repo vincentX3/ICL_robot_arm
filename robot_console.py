@@ -1,5 +1,4 @@
 class robot_console(object):
-    import time
     # serial port
     ser = ''
 
@@ -272,18 +271,11 @@ class robot_console(object):
         '''
         # todo 根据实际空间完善放置代码
         if instrument == 'knife':
-            self.do_pick([0, 0, 0])
+            self.do_place([-25, 14, 5])
         if instrument == 'fork':
-            self.do_pick([1, 1, 1])
+            self.do_place([-25, 19, 5])
         if instrument == 'spoon':
-            self.do_pick([2, 2, 2])
-        time.sleep(1.5)
-        if instrument == 'knife':
-            self.do_place([0, 0, 0])
-        if instrument == 'fork':
-            self.do_place([1, 1, 1])
-        if instrument == 'spoon':
-            self.do_place([2, 2, 2])
+            self.do_place([-25, 9,  5])
 
     def pick_instrument(self, instrument):
         '''
@@ -292,26 +284,28 @@ class robot_console(object):
         :return:
         '''
         # todo 根据实际空间完善放置代码
+        import time
         if instrument == 'knife':
             self.do_pick([-25, 14, 0.3])
         if instrument == 'fork':
             self.do_pick([-25, 19, 0.3])
         if instrument == 'spoon':
-            self.do_pick([-25, 9, 0.3])
+            self.do_pick([-25, 9,  0.3])
         time.sleep(0.5)
         if instrument == 'knife':
-            self.do_place([20, 25, 0.3])
+            self.do_place([20, 25, 5])
         if instrument == 'fork':
-            self.do_place([20, 25, 0.3])
+            self.do_place([20, 25, 5])
         if instrument == 'spoon':
-            self.do_place([20, 25, 0.3])
+            self.do_place([20, 25, 5])
 
+    def to_xyz(self, dir_obj, speed=5):
+        # dir_obj = [x,y,z]
+        self.execute(self.move_table(dir_obj, speed))
 
-import time
-a = robot_console()
-# a.do_place([-25, 20, 0.3])
-a.pick_instrument('spoon')
-time.sleep(1)
-a.pick_instrument('knife')
-time.sleep(1)
-a.pick_instrument('fork')
+    def claw_close(self, angle=0):
+        self.execute(self.claw_table(angle))
+
+    def claw_open(self, angle=0):
+        self.execute(self.claw_table(angle, 'OPEN'))
+

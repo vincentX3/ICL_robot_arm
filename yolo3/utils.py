@@ -6,26 +6,41 @@ from PIL import Image
 import numpy as np
 from matplotlib.colors import rgb_to_hsv, hsv_to_rgb
 
-def trans_camera2arm_base(point, angle1, angle2):
+def trans_camera2arm_base(point):
     '''
     :param point: 点在相机镜头坐标系下的坐标
-    :param angle1: 相机坐标系z轴的偏转角
-    :param angle2: 相机坐标系x轴的偏转角
-    :return point2use: 点在机械臂坐标系下的坐标
+    :return real_point: 点在机械臂坐标系下的坐标
     '''
-    point = np.array(point)
-    print("point shape:", point.shape)
-    matrix_1 = np.array([[1.0, 0, 0],
-                           [0, np.cos(angle1), np.sin(angle1)],
-                           [0, np.sin(-angle1), np.cos(angle1)]])
-    print("m shape", matrix_1.shape)
-    new_point = np.dot(matrix_1, point)
-
-    matrix_2 = np.array([[np.cos(angle2), -np.sin(angle2), 0],
-                           [np.sin(angle2), np.cos(angle2), 0],
-                           [0, 0, 1]])
-    real_point = np.dot(matrix_2, new_point)
+    point = np.array(point,dtype=float)
+    matrix_1 = np.array([[1,0.848754537167497 ,-1.24335361483876],
+                         [-0.848754537167497,1,1.34505264470594],
+                         [1.24335361483876,-1.34505264470594,1]])
+    matrix_2 = np.array([-0.0350863480678324,
+                        0.0767703425653503,
+                        0.0145349590240303])
+    real_point = 0.008853641278713*np.dot(matrix_1, point.T)+matrix_2
     return real_point
+
+# def trans_camera2arm_base(point, angle1, angle2):
+#     '''
+#     :param point: 点在相机镜头坐标系下的坐标
+#     :param angle1: 相机坐标系z轴的偏转角
+#     :param angle2: 相机坐标系x轴的偏转角
+#     :return point2use: 点在机械臂坐标系下的坐标
+#     '''
+#     point = np.array(point)
+#     print("point shape:", point.shape)
+#     matrix_1 = np.array([[1.0, 0, 0],
+#                            [0, np.cos(angle1), np.sin(angle1)],
+#                            [0, np.sin(-angle1), np.cos(angle1)]])
+#     print("m shape", matrix_1.shape)
+#     new_point = np.dot(matrix_1, point)
+#
+#     matrix_2 = np.array([[np.cos(angle2), -np.sin(angle2), 0],
+#                            [np.sin(angle2), np.cos(angle2), 0],
+#                            [0, 0, 1]])
+#     real_point = np.dot(matrix_2, new_point)
+#     return real_point
 
 def compose(*funcs):
     """Compose arbitrarily many functions, evaluated left to right.
