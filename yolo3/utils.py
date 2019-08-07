@@ -8,20 +8,27 @@ from matplotlib.colors import rgb_to_hsv, hsv_to_rgb
 
 def coordinate_transform(a3, b3, c3):
     # 此函数直接从pixel坐标系直接转换为以机械臂为坐标系的坐标
-    [a1, b1] = [298, 144]
-    [a2, b2] = [315, 127]
-    [a4, b4] = [336, 145]
-    [x1, y1] = [1, 0]
-    [x2, y2] = [0, 4]
-    [x4, y4] = [4, 5]
-    camera_height = 74  #
+    [a1, b1] = [362, 167]
+    [a2, b2] = [458, 101]
+    [a4, b4] = [361, 103]
+    [x1, y1] = [-10, 30]
+    [x2, y2] = [-25, 20]
+    [x4, y4] = [-10, 20]
+    camera_height = 0.76  #
     k1 = ((b2-b4)*(a3-a4)-(b3-b4)*(a2-a4))/((a1-a4)*(b2-b4)-(a2-a4)*(b1-b4))
     k2 = ((b1-b4)*(a3-a4)-(a1-a4)*(b3-b4))/((a2-a4)*(b1-b4)-(b2-b4)*(a1-a4))
-    x3 = k1*(x1-x4)+k2*(x2-x4)+x4
-    y3 = k1*(y1-y4)+k2*(y2-y4)+y4
+    x3 = (k1*(x1-x4)+k2*(x2-x4)+x4)/100
+    y3 = (k1*(y1-y4)+k2*(y2-y4)+y4)/100
     z3 = camera_height - c3
+    if y3>0.3:
+        y3=0.3
+    if z3<0.003:
+        z3=0.03
     print(x3, y3, z3)
-    return [x3, y3, z3]
+
+    position=[x3, y3, z3]
+
+    return position
 
 def trans_camera2arm_base(point):
     '''
