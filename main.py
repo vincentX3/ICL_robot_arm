@@ -34,20 +34,23 @@ class PickAndPlace(object):
                 return 
 
     def pipeline_from_hand(self):
-        # class_name,real_coordinate=self.camera.get_coordinate()
-        # # aim_coordinate=self.console.aihuan_algrithm(real_coordinate)
-        # aim_coordinate=list(real_coordinate)
-        # #假设直接抓取并能成功
-        # print(aim_coordinate)
-        # print(class_name)
-        # self.console.to_xyz(aim_coordinate)
-        # self.console.claw_close()
-        # self.console.place_instrument(class_name)
-        #
-        self.console.claw_open()
-        self.console.to_xyz([25,20,10])
+        class_name,real_coordinate=self.camera.get_coordinate()
+        # aim_coordinate=self.console.aihuan_algrithm(real_coordinate)
+        aim_coordinate=list(real_coordinate)
+        if class_name=='not found':
+            self.microphone.feedback('waiting')
+            self.microphone.feedback('say_again')
+        #假设直接抓取并能成功
+        print(aim_coordinate)
+        print(class_name)
+        self.console.to_xyz(aim_coordinate)
         self.console.claw_close()
-        self.console.place_instrument('fork')
+        self.console.place_instrument(class_name)
+        # self.camera.refresh_obj_file()
+        # self.console.claw_open()
+        # self.console.to_xyz([25,20,10])
+        # self.console.claw_close()
+        # self.console.place_instrument('fork')
 
     def pipeline_to_hand(self,class_name):
         self.console.pick_instrument(class_name)

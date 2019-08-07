@@ -11,7 +11,7 @@ class Microphone(object):
         self.r=sr.Recognizer()
         self.mic=sr.Microphone(device_index=1)
         self.mode='online'
-        self.ORDER_DICT=['here you are','come here']
+        self.ORDER_DICT=['here you are','come here','you are','are']
         self.INSTRUMENTS_DICT=['knife', 'fork', 'spoon']
         self.KEYWORDS=[['I want a knife',1.0],['I want a fork',1.0],['I want a spoon',1.0],['terminate the programme',1.0]]
         self.p = pyaudio.PyAudio() # instantiate PyAudio (1)
