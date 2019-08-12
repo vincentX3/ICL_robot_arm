@@ -14,7 +14,7 @@ def coordinate_transform(a3, b3, c3):
     [x1, y1] = [-10, 30]
     [x2, y2] = [-25, 20]
     [x4, y4] = [-10, 20]
-    camera_height = 0.76  
+    camera_height = 0.76
     k1 = ((b2-b4)*(a3-a4)-(b3-b4)*(a2-a4))/((a1-a4)*(b2-b4)-(a2-a4)*(b1-b4))
     k2 = ((b1-b4)*(a3-a4)-(a1-a4)*(b3-b4))/((a2-a4)*(b1-b4)-(b2-b4)*(a1-a4))
     x3 = (k1*(x1-x4)+k2*(x2-x4)+x4)/100
