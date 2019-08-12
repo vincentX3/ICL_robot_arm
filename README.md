@@ -1,8 +1,8 @@
 # ICL_robot_arm
-![title](\img\title.png)
+![title](https://github.com/vincentX3/ICL_robot_arm/blob/master/img/title.png)
 
 ## Our Concept
-![concept](\img\concept.png)
+![concept](https://github.com/vincentX3/ICL_robot_arm/blob/master/img/concept.png)
 We want the robotic arm can fetch instrument from surgeon's hand and place it to specific place. Also the arm can pick and pass instruments to surgeon by recognizing surgeon's order.
 
 ## System Pipeline
@@ -28,6 +28,6 @@ We want the robotic arm can fetch instrument from surgeon's hand and place it to
 - robotic arm
 
 ## Demo
-[experimental demo](\img\实验.mp4)
+[experimental demo](https://github.com/vincentX3/ICL_robot_arm/blob/master/img/实验.mp4)
 
-[editor version](\img\arm_final.mp4)
+[editor version](https://github.com/vincentX3/ICL_robot_arm/blob/master/img/arm_final.mp4)
