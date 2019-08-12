@@ -6,7 +6,7 @@
 We want the robotic arm can fetch instrument from surgeon's hand and place it to specific place. Also the arm can pick and pass instruments to surgeon by recognizing surgeon's order.
 
 ## System Pipeline
-![pipeline](\img\pipeline.png)
+![pipeline](https://github.com/vincentX3/ICL_robot_arm/blob/master/img/pipeline.png)
 
 ## Environment
 ### software
