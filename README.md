@@ -28,6 +28,6 @@ We want the robotic arm can fetch instrument from surgeon's hand and place it to
 - robotic arm
 
 ## Demo
-![experimental demo](https://youtu.be/wx_yEs1omGY)
+[experimental demo](https://youtu.be/wx_yEs1omGY)
 
-![editor version](https://youtu.be/sWFDIsAVgwk)
+[editor version](https://youtu.be/sWFDIsAVgwk)
