@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # ICL_robot_arm
 ![title](https://github.com/vincentX3/ICL_robot_arm/blob/master/img/title.png)
 
@@ -30,7 +28,6 @@ We want the robotic arm can fetch instrument from surgeon's hand and place it to
 - robotic arm
 
 ## Demo
-[experimental demo](https://github.com/vincentX3/ICL_robot_arm/blob/master/img/实验.mp4)
+![experimental demo](https://youtu.be/wx_yEs1omGY)
 
-[editor version](https://github.com/vincentX3/ICL_robot_arm/blob/master/img/arm_final.mp4)
->>>>>>> 428e572d4db64ac09d583793c8d1eb85dff9f3aa
+![editor version](https://youtu.be/sWFDIsAVgwk)
